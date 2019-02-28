@@ -11,7 +11,36 @@
                 "path": "config/"
             }
         ],
-        "addFile": [],
+        "addFile": [
+            {
+                "name": "app_sync__tasks.py",
+                "path": "apps/sync/"
+            },
+            {
+                "name": "model_flfactalma__mg_customers.py",
+                "path": "models/flfactalma/"
+            },
+            {
+                "name": "model_flfactalma__mg_customers_def.py",
+                "path": "models/flfactalma/"
+            },
+            {
+                "name": "model_flsyncppal__sh_updatePrices_def.py",
+                "path": "models/flsyncppal/"
+            },
+            {
+                "name": "model_flsyncppal__sh_importOrders_def.py",
+                "path": "models/flsyncppal/"
+            },
+            {
+                "name": "model_flsyncppal__sh_updateStocks_def.py",
+                "path": "models/flsyncppal/"
+            },
+            {
+                "name": "model_flsyncppal__sh_importCustomers_def.py",
+                "path": "models/flsyncppal/"
+            }
+        ],
         "deleteFile": [],
         "replaceFile": [
             {
@@ -19,6 +48,19 @@
                 "path": "config/"
             }
         ],
-        "patchScript": []
+        "patchScript": [
+            {
+                "name": "model_flsyncppal__flsyncppal_def.py",
+                "path": "models/flsyncppal/"
+            },
+            {
+                "name": "model_flfactppal__empresa.py",
+                "path": "models/flfactppal/"
+            },
+            {
+                "name": "model_flfactppal__empresa_def.py",
+                "path": "models/flfactppal/"
+            }
+        ]
     }
 }
