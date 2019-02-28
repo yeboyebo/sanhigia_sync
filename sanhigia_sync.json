@@ -1,0 +1,24 @@
+{
+    "name": "sanhigia_sync",
+    "modifications": {
+        "patchJson": [
+            {
+                "name": "urls.json",
+                "path": "config/"
+            },
+            {
+                "name": "registros.json",
+                "path": "config/"
+            }
+        ],
+        "addFile": [],
+        "deleteFile": [],
+        "replaceFile": [
+            {
+                "name": "dependencias.json",
+                "path": "config/"
+            }
+        ],
+        "patchScript": []
+    }
+}
