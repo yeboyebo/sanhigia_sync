@@ -179,7 +179,7 @@ class sanhigia_sync(interna):
             codpago = _i.obtenerCodPago(order["payment_method"])
             email = order["email"]
 
-            curPedido.setValueBuffer("codserie", "A")
+            curPedido.setValueBuffer("codserie", "W")
             curPedido.setValueBuffer("codejercicio", _i.obtenerEjercicio(order["created_at"]))
             curPedido.setValueBuffer("codalmacen", "ALM")
             curPedido.setValueBuffer("fecha", order["created_at"][:10])
@@ -322,7 +322,7 @@ class sanhigia_sync(interna):
 
             # ref = _i.obtenerReferencia(linea["sku"], linea["size"])
             ref = linea["sku"]
-            ref = "00102300"
+            
             desc = _i.obtenerDescripcion(ref)
             qsatype.debug("Descripcion: " + str(desc))
             codiva = _i.obtenerCodImpuesto(linea["iva"])
