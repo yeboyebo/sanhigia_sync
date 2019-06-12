@@ -9,6 +9,8 @@ from models.flsyncppal import sh_updateStocks_def as iGbStocks
 from models.flsyncppal import sh_updatePrices_def as iGbPrices
 from models.flsyncppal import sh_importCustomers_def as iGbCust
 
+from models.flsyncppal import sh_enviocorreosegui_def
+
 
 globalValues.registrarmodulos()
 cdDef = 10

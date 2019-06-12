@@ -39,6 +39,14 @@
             {
                 "name": "model_flsyncppal__sh_importCustomers_def.py",
                 "path": "models/flsyncppal/"
+            },
+            {
+                "path": "models/flsyncppal/",
+                "name": "model_flsyncppal__sh_envioCorreoSegui_def.py"
+            },
+            {
+                "path": "models/flsyncppal/",
+                "name": "model_flsyncppal__sh_enviocorreosegui_def.py"
             }
         ],
         "deleteFile": [],
@@ -46,6 +54,10 @@
             {
                 "name": "dependencias.json",
                 "path": "config/"
+            },
+            {
+                "path": "AQNEXT/",
+                "name": "settings.py"
             }
         ],
         "patchScript": [
