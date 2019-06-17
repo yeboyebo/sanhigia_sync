@@ -174,7 +174,9 @@ class sanhigia_sync(interna):
             codpostal = str(order["billing_address"]["postcode"])
             city = order["billing_address"]["city"]
             region = order["billing_address"]["region"]
-            codpais = order["billing_address"]["country_id"]
+            print(_i.damePaisMg(order["billing_address"]["country_id"]))
+            codpais = _i.damePaisMg(order["billing_address"]["country_id"])
+            print("3")
             telefonofac = order["billing_address"]["telephone"]
             codpago = _i.obtenerCodPago(order["payment_method"])
             email = order["email"]
@@ -202,6 +204,7 @@ class sanhigia_sync(interna):
             curPedido.setValueBuffer("tasaconv", 1)
             curPedido.setValueBuffer("email", email[:100] if email else email)
             curPedido.setValueBuffer("total", order["grand_total"])
+            curPedido.setValueBuffer("totaleuros", order["grand_total"])
             curPedido.setValueBuffer("neto", order["subtotal"])
             curPedido.setValueBuffer("totaliva", order["tax_amount"])
             # curPedido.setValueBuffer("gu_pedidoferia", "Web Mayorista")
@@ -252,7 +255,9 @@ class sanhigia_sync(interna):
             codpostalenv = str(order["shipping_address"]["postcode"])
             ciudad = order["shipping_address"]["city"]
             region = order["shipping_address"]["region"]
-            pais = order["shipping_address"]["country_id"]
+            print("1")
+            pais = _i.damePaisMg(order["shipping_address"]["country_id"])
+            print(pais)
             telefonoenv = order["shipping_address"]["telephone"]
 
             curPedi.setValueBuffer("mg_numcliente", numcliente[:15] if numcliente else numcliente)
@@ -285,7 +290,10 @@ class sanhigia_sync(interna):
             codpostalfac = str(order["billing_address"]["postcode"])
             ciudad = order["billing_address"]["city"]
             region = order["billing_address"]["region"]
-            pais = order["billing_address"]["country_id"]
+            print("2")
+            print(order["billing_address"]["country_id"])
+            pais = _i.damePaisMg(order["billing_address"]["country_id"])
+            print(pais)
             telefonofac = order["billing_address"]["telephone"]
             curPedi.setValueBuffer("mg_nombrefac", nombrefac[:100] if nombrefac else nombrefac)
             curPedi.setValueBuffer("mg_apellidosfac", apellidosfac[:200] if apellidosfac else apellidosfac)
@@ -357,7 +365,7 @@ class sanhigia_sync(interna):
 
     def sanhigia_sync_obtenerCodSerie(self, nomPais, codPostal):
         codPais = None
-        codSerie = "A"
+        codSerie = "W"
         codPostal2 = None
 
         if not nomPais or nomPais == "":
@@ -445,7 +453,8 @@ class sanhigia_sync(interna):
             return qsatype.FLUtil.quickSqlSelect("atributosarticulos", "barcode", "UPPER(referencia) = '" + str(ref) + "'")
 
     def sanhigia_sync_obtenerCodImpuesto(self, iva):
-        return "GEN"
+        codImpuesto = qsatype.FLUtil.quickSqlSelect("impuestos", "codimpuesto", "iva = " + str(iva))
+        return codImpuesto
 
     def sanhigia_sync_creaLineaGastosComanda(self, curPedido, gastos):
         try:
@@ -747,6 +756,9 @@ class sanhigia_sync(interna):
             cod = qsatype.FLUtil.sqlSelect("clientes", "codcliente", "cifnif = '" + str(cif) + "'")
         return cod
 
+    def sanhigia_sync_damePaisMg(self, codPaisISO):        
+        return qsatype.FLUtil.sqlSelect("paises", "codpais", "codiso = '" + str(codPaisISO) + "'")
+
     def __init__(self, context=None):
         super(sanhigia_sync, self).__init__(context)
 
@@ -830,6 +842,9 @@ class sanhigia_sync(interna):
 
     def obtenerCodCliente(self, cif):
         return self.ctx.sanhigia_sync_obtenerCodCliente(cif)
+
+    def damePaisMg(self, codPaisISO):
+        return self.ctx.sanhigia_sync_damePaisMg(codPaisISO)
 
 # @class_declaration head #
 class head(sanhigia_sync):
