@@ -26,7 +26,7 @@ class sanhigia_sync(interna):
     def sanhigia_sync_enviocorreo():
         q = qsatype.FLSqlQuery()
         q.setSelect("a.idalbaran,a.agenciaenvio,a.sh_numtracking,a.codigo,c.nombre,c.email")
-        q.setFrom("albaranescli a INNER JOIN clientes c ON a.codcliente = c.codcliente")
+        q.setFrom("albaranescli a LEFT OUTER JOIN clientes c ON a.codcliente = c.codcliente")
         where = "a.sh_numtracking is not null AND a.sh_estadosegui = 'Pendiente' ORDER BY a.fecha LIMIT 20"
         # if where != "":
         #     where += " AND "
