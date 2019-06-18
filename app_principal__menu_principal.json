@@ -1,0 +1,15 @@
+{
+    "modifications": [
+        {
+            "type": "insertAfterItem",
+            "path": "/items[root]",
+            "value": {
+                "NAME": "PRUEBAS ENVIO CORREO",
+                "TEXT": "PRUEBAS ENVIO CORREO",
+                "URL": "principal/clientes/master",
+                "ICON": "dashboard",
+                "COLOR": "rgb(30, 170, 30)"
+            }
+        }
+    ]
+}

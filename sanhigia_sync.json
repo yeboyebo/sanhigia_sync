@@ -9,6 +9,18 @@
             {
                 "name": "registros.json",
                 "path": "config/"
+            },
+            {
+                "name": "app_portal__menu_portal.json",
+                "path": "apps/portal/templates/portal/"
+            },
+            {
+                "name": "app_principal__menu_principal.json",
+                "path": "apps/principal/templates/principal/"
+            },
+            {
+                "path": "apps/principal/templates/principal/plantillas/",
+                "name": "app_principal__masterclientes.json"
             }
         ],
         "addFile": [
@@ -42,10 +54,6 @@
             },
             {
                 "path": "models/flsyncppal/",
-                "name": "model_flsyncppal__sh_envioCorreoSegui_def.py"
-            },
-            {
-                "path": "models/flsyncppal/",
                 "name": "model_flsyncppal__sh_enviocorreosegui_def.py"
             }
         ],
@@ -71,6 +79,14 @@
             },
             {
                 "name": "model_flfactppal__empresa_def.py",
+                "path": "models/flfactppal/"
+            },
+            {
+                "name": "model_flfactppal__clientes_def.py",
+                "path": "models/flfactppal/"
+            },
+            {
+                "name": "model_flfactppal__clientes.py",
                 "path": "models/flfactppal/"
             }
         ]

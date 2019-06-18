@@ -38,19 +38,19 @@ class sanhigia_sync(interna):
             return True
         oDM = qsatype.Object()
         qDM = qsatype.FLSqlQuery()
-        qDM.setSelect("hostcorreosaliente, puertosmtp, tipocxsmtp, tipoautsmtp, usuariosmtp, passwordsmtp")
+        qDM.setSelect("sh_hostcorreosaliente, sh_puertosmtp, sh_tipocxsmtp, sh_tipoautsmtp, sh_usuariosmtp, sh_passwordsmtp")
         qDM.setFrom(u"factppal_general")
         qDM.setWhere(u"1 = 1")
         if not qDM.exec_():
              # syncppal.iface.log("Error", "No estan informados los datos del correo saliente.")
             return False
         if qDM.first():
-            oDM["hostcorreosaliente"] = qDM.value("hostcorreosaliente")
-            oDM["puertosmtp"] = qDM.value("puertosmtp")
-            oDM["tipocxsmtp"] = qDM.value("tipocxsmtp")
-            oDM["tipoautsmtp"] = qDM.value("tipoautsmtp")
-            oDM["usuariosmtp"] = qDM.value("usuariosmtp")
-            oDM["passwordsmtp"] = qDM.value("passwordsmtp")
+            oDM["hostcorreosaliente"] = qDM.value("sh_hostcorreosaliente")
+            oDM["puertosmtp"] = qDM.value("sh_puertosmtp")
+            oDM["tipocxsmtp"] = qDM.value("sh_tipocxsmtp")
+            oDM["tipoautsmtp"] = qDM.value("sh_tipoautsmtp")
+            oDM["usuariosmtp"] = qDM.value("sh_usuariosmtp")
+            oDM["passwordsmtp"] = qDM.value("sh_passwordsmtp")
         while q.next():
             idalbaran = q.value("a.idalbaran")
             agencia = q.value("a.agenciaenvio")
@@ -78,6 +78,7 @@ class sanhigia_sync(interna):
                 cuerpo2 = '<h4>ACTUALIZACIÓN DE TU PEDIDO</h4><p>Tu pedido con albarán {0} ha sido enviado.<br>El número del seguimiento del pedido es {1}.</p>Puedes comprobar el estado del envio a <br><a class="boton" href="{2}={1}">Consultar envio</a><br><br>Gracias, Sanhigia'.format(codigo, numtracking, urlsegui)
                 cuerpo += cuerpo2
                 cuerpo += '</h4></td></tr></table></td></tr></table></td></tr></table>'
+                emails = email.split(",")
                 # cuerpo += "{}={}".format(urlsegui, numtracking)
                 # if agencia == "CEX":
                 #     cuerpo += "https://s.correosexpress.com/SeguimientoSinCP/search?n={}".format(numtracking)
@@ -86,7 +87,7 @@ class sanhigia_sync(interna):
                 if connection is False:
                     # syncppal.iface.log("Error. Los datos de conexión han fallado", "enviocorreo")
                     estado = "Error"
-                elif notifications.sendMail(connection, oDM.usuariosmtp, asunto, cuerpo, [email]) is False:
+                elif notifications.sendMail(connection, oDM.usuariosmtp, asunto, cuerpo, emails) is False:
                     # syncppal.iface.log("Error. Ocurrió un error durante el proceso de enviar correos de segumiento de envio", "enviocorreo")
                     estado = "Error"
                 else:

@@ -1,0 +1,16 @@
+{
+    "modifications": [
+        {
+            "type": "insertAfterItem",
+            "path": "/items[root]",
+            "value": {
+                "NAME": "principal",
+                "URL": "principal",
+                "TEXT": "PRUEBAS YEBOYEBO",
+                "ICON": "dashboard",
+                "VISIBLE": true,
+                "COLOR": "rgb(170, 30, 30)"
+            }
+        }
+    ]
+}

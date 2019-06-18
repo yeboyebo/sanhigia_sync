@@ -1,0 +1,54 @@
+{
+    "modifications": [
+        {
+            "type": "insertAfterNode",
+            "path": "/layout/root",
+            "value": {
+                "envioCorreo": {
+                    "componente": "YBButton",
+                    "prefix": "clientes",
+                    "label": "envioCorreo",
+                    "className": "floatRight",
+                    "buttonType": "raised",
+                    "primary": false,
+                    "secondary": true,
+                    "action": {
+                        "key": "enviar",
+                        "success": [
+                            {
+                                "slot": "refrescar"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "insertAfterNode",
+            "path": "/acciones/root",
+            "value": {
+                "enviar": {
+                    "action": "legacy",
+                    "serverAction": "enviocorreo",
+                    "prefix": "clientes",
+                    "icon": "send"
+                }
+            }
+        },
+        {
+            "type": "deleteNode",
+            "path": "/initValidation",
+            "value": null
+        },
+        {
+            "type": "deleteNode",
+            "path": "/focus",
+            "value": null
+        },
+        {
+            "type": "deleteNode",
+            "path": "/drawIf",
+            "value": null
+        }
+    ]
+}
