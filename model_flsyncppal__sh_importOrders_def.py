@@ -132,8 +132,8 @@ class sanhigia_sync(interna):
             # if not _i.creaLineaGastosComanda(curPedido, order["shipping_price"]):
             #     return False
 
-            #if not _i.creaLineaDescuento(curPedido, order["discount_amount"], order["coupon"]):
-            #    return False
+            if not _i.creaLineaDescuento(curPedido, order["discount_amount"], order["coupon"]):
+                return False
             neto = round(parseFloat(order["grand_total"] / ((100 + iva) / 100)), 2)
             iva = order["grand_total"] - neto
             if not qsatype.FLSqlQuery().execSql(u"UPDATE pedidoscli SET total = " + str(order["grand_total"]) + ", neto = " + str(neto) + ", totaliva = " + str(iva) + " WHERE idpedido = '" + str(idpedido) + "'"):
