@@ -132,8 +132,8 @@ class sanhigia_sync(interna):
             # if not _i.creaLineaGastosComanda(curPedido, order["shipping_price"]):
             #     return False
 
-            # if not _i.creaLineaDescuento(curPedido, order["discount_amount"], iva):
-            #     return False
+            #if not _i.creaLineaDescuento(curPedido, order["discount_amount"], order["coupon"]):
+            #    return False
             neto = round(parseFloat(order["grand_total"] / ((100 + iva) / 100)), 2)
             iva = order["grand_total"] - neto
             if not qsatype.FLSqlQuery().execSql(u"UPDATE pedidoscli SET total = " + str(order["grand_total"]) + ", neto = " + str(neto) + ", totaliva = " + str(iva) + " WHERE idpedido = '" + str(idpedido) + "'"):
@@ -207,6 +207,12 @@ class sanhigia_sync(interna):
             curPedido.setValueBuffer("totaleuros", order["grand_total"])
             curPedido.setValueBuffer("neto", order["subtotal"])
             curPedido.setValueBuffer("totaliva", order["tax_amount"])
+            if int(order["shipping_price"]) > 0:
+                curPedido.setValueBuffer("totalportes", order["shipping_price"])
+                curPedido.setValueBuffer("netoportes", order["shipping_price"]/1.21)
+                curPedido.setValueBuffer("ivaportes", 21)
+                curPedido.setValueBuffer("codimpuestoportes", 'IVA21')
+                curPedido.setValueBuffer("totalivaportes", order["shipping_price"]-(order["shipping_price"]/1.21))
             # curPedido.setValueBuffer("gu_pedidoferia", "Web Mayorista")
             # curPedido.setValueBuffer("gu_codferia", "Web Mayorista")
             curPedido.setValueBuffer("mg_increment_id", str(order["increment_id"]))
@@ -255,9 +261,7 @@ class sanhigia_sync(interna):
             codpostalenv = str(order["shipping_address"]["postcode"])
             ciudad = order["shipping_address"]["city"]
             region = order["shipping_address"]["region"]
-            print("1")
             pais = _i.damePaisMg(order["shipping_address"]["country_id"])
-            print(pais)
             telefonoenv = order["shipping_address"]["telephone"]
 
             curPedi.setValueBuffer("mg_numcliente", numcliente[:15] if numcliente else numcliente)
@@ -290,10 +294,7 @@ class sanhigia_sync(interna):
             codpostalfac = str(order["billing_address"]["postcode"])
             ciudad = order["billing_address"]["city"]
             region = order["billing_address"]["region"]
-            print("2")
-            print(order["billing_address"]["country_id"])
             pais = _i.damePaisMg(order["billing_address"]["country_id"])
-            print(pais)
             telefonofac = order["billing_address"]["telephone"]
             curPedi.setValueBuffer("mg_nombrefac", nombrefac[:100] if nombrefac else nombrefac)
             curPedi.setValueBuffer("mg_apellidosfac", apellidosfac[:200] if apellidosfac else apellidosfac)
@@ -351,7 +352,7 @@ class sanhigia_sync(interna):
             curLinea.setValueBuffer("dtopor", 0)
             curLinea.setValueBuffer("codimpuesto", codiva[:10] if codiva else codiva)
             curLinea.setValueBuffer("canpedidorect", 0)
-            curLinea.setValueBuffer("totalenalbaran", parseFloat(linea["pvptotaliva"] / ((100 + iva) / 100)))
+            curLinea.setValueBuffer("totalenalbaran", 0)
 
             if not curLinea.commitBuffer():
                 syncppal.iface.log(ustr("Error. No se pudo guardar la línea ", str(nl), " de la venta ", str(idpedido)), "shsyncorders")
@@ -510,69 +511,27 @@ class sanhigia_sync(interna):
             qsatype.debug(e)
             return False
 
-    def sanhigia_sync_creaLineaDescuento(self, curPedido, dto, iva):
+    def sanhigia_sync_creaLineaDescuento(self, curPedido, dto, descripcion):
         try:
-            idComanda = curPedido.valueBuffer("idtpv_comanda")
             codigo = curPedido.valueBuffer("codigo")
+            idpedido = curPedido.valueBuffer("idpedido")
 
-            if not idComanda or idComanda == 0 or not dto or dto == 0 or dto == "0.0000" or dto == "0.00":
+            if not codigo or codigo == 0 or not dto or dto == 0 or dto == "0.0000" or dto == "0.00":
                 return True
 
-            descBono = False
-            jsonBono = False
-            codBono = False
-            strBono = qsatype.FLUtil.sqlSelect("tpv_gestionparametros", "valor", "param = 'GASTAR_BONOS'")
-
-            try:
-                jsonBono = json.loads(strBono)
-            except Exception:
-                pass
-
-            if jsonBono and "fechahasta" in jsonBono and jsonBono["fechahasta"] and jsonBono["fechahasta"] != "":
-                if qsatype.FLUtil.daysTo(qsatype.Date(), jsonBono["fechahasta"]) >= 0:
-                    descBono = True
-
-            if descBono:
-                codBono = qsatype.FLUtil.sqlSelect("eg_movibono", "codbono", "venta = '" + codigo + "'")
-                if not codBono or codBono == "" or codBono is None:
-                    descBono = False
-
-            if descBono:
-                # QUITAR CUANDO EL PROCESO DE LOS BONOS DE JOSE VAYA BIEN
-                dto = qsatype.FLUtil.sqlSelect("eg_movibono", "importe", "codbono = '" + codBono + "' AND venta = '" + codigo + "'") * (-1)
-
-                if codigo[:4] == "WEB7":
-                    dto = dto / 0.8
-                # QUITAR HASTA AQUI
-
-                ref = jsonBono["referenciabono"]
-                bC = jsonBono["barcodebono"]
-                desc = "BONO " + codBono
-            else:
-                ref = "0000ATEMP00001"
-                bC = "8433613403654"
-                desc = "DESCUENTO"
-
-            curLDesc = qsatype.FLSqlCursor("tpv_lineascomanda")
+            ref = "DTOWEB"
+            desc = "DESCUENTO: " + descripcion
+ 
+            curLDesc = qsatype.FLSqlCursor("lineaspedidoscli")
             curLDesc.setModeAccess(curLDesc.Insert)
             curLDesc.refreshBuffer()
-            curLDesc.setValueBuffer("idtpv_comanda", idComanda)
-            curLDesc.setValueBuffer("codcomanda", codigo[:12] if codigo else codigo)
+            curLDesc.setValueBuffer("idpedido", idpedido)
             curLDesc.setValueBuffer("referencia", ref[:18] if ref else ref)
-            curLDesc.setValueBuffer("barcode", bC[:20] if bC else bC)
+            #curLDesc.setValueBuffer("barcode", bC[:20] if bC else bC)
             curLDesc.setValueBuffer("descripcion", desc[:100] if desc else desc)
-
-            dtoSinIva = None
-
-            if iva and iva != 0:
-                curLDesc.setValueBuffer("codimpuesto", "GEN")
-                curLDesc.setValueBuffer("iva", 21)
-                dtoSinIva = dto / (1 + (parseFloat(21) / 100))
-            else:
-                curLDesc.setValueBuffer("codimpuesto", "EXT")
-                curLDesc.setValueBuffer("iva", 0)
-                dtoSinIva = dto
-
+            curLDesc.setValueBuffer("codimpuesto", "IVA21")
+            curLDesc.setValueBuffer("iva", 21)
+            dtoSinIva = dto / (1 + (parseFloat(21) / 100))
             # curLDesc.setValueBuffer("ivaincluido", True)
             curLDesc.setValueBuffer("pvpunitarioiva", dto)
             curLDesc.setValueBuffer("pvpunitario", dtoSinIva)
@@ -580,10 +539,7 @@ class sanhigia_sync(interna):
             curLDesc.setValueBuffer("pvptotal", dtoSinIva)
             curLDesc.setValueBuffer("pvptotaliva", dto)
             curLDesc.setValueBuffer("pvpsindtoiva", dto)
-            curLDesc.setValueBuffer("codtienda", "AWEB")
-
-            idsincro = qsatype.FactoriaModulos.get('formRecordtpv_lineascomanda').iface.pub_commonCalculateField("idsincro", curLDesc)
-            curLDesc.setValueBuffer("idsincro", idsincro[:30] if idsincro else idsincro)
+            curLDesc.setValueBuffer("totalenalbaran", 0)
 
             if not curLDesc.commitBuffer():
                 syncppal.iface.log(ustr("Error. No se pudo crear la línea de descuento de la venta ", str(codigo)), "shsyncorders")
@@ -819,8 +775,8 @@ class sanhigia_sync(interna):
     def creaLineaGastosComanda(self, curPedido, gastos):
         return self.ctx.sanhigia_sync_creaLineaGastosComanda(curPedido, gastos)
 
-    def creaLineaDescuento(self, curPedido, dto, iva):
-        return self.ctx.sanhigia_sync_creaLineaDescuento(curPedido, dto, iva)
+    def creaLineaDescuento(self, curPedido, dto, desc):
+        return self.ctx.sanhigia_sync_creaLineaDescuento(curPedido, dto, desc)
 
     def cerrarVentaWeb(self, curPedido):
         return self.ctx.sanhigia_sync_cerrarVentaWeb(curPedido)
