@@ -216,8 +216,11 @@ class sanhigia_sync(interna):
                 curPedido.setValueBuffer("codimpuestoportes", 'IVA21')
                 curPedido.setValueBuffer("totalivaportes", order["shipping_price"]-(order["shipping_price"]/1.21))
             #Si es una domiciliacion, pongo el numero de cuenta en las observaciones
-            if(order["bank_account"] != None && order["payment_method"] == 'direct_debit'):
+            if(order["bank_account"] != None and order["payment_method"] == 'direct_debit'):
                 curPedido.setValueBuffer("observaciones", order["bank_account"])
+            if(order["payment_method"] == 'banktransfer' or order["payment_method"] == 'direct_debit'):
+                curPedido.setValueBuffer("sh_estadopago", "Pte. Validacion pago")
+                curPedido.setValueBuffer("pda", "Suspendido")
 
             if not _i.creaLineaEnvio(order, curPedido):
                 return False
