@@ -174,9 +174,7 @@ class sanhigia_sync(interna):
             codpostal = str(order["billing_address"]["postcode"])
             city = order["billing_address"]["city"]
             region = order["billing_address"]["region"]
-            print(_i.damePaisMg(order["billing_address"]["country_id"]))
             codpais = _i.damePaisMg(order["billing_address"]["country_id"])
-            print("3")
             telefonofac = order["billing_address"]["telephone"]
             codpago = _i.obtenerCodPago(order["payment_method"])
             email = order["email"]
@@ -207,17 +205,19 @@ class sanhigia_sync(interna):
             curPedido.setValueBuffer("totaleuros", order["grand_total"])
             curPedido.setValueBuffer("neto", order["subtotal"])
             curPedido.setValueBuffer("totaliva", order["tax_amount"])
+            curPedido.setValueBuffer("mg_increment_id", str(order["increment_id"]))
+            curPedido.setValueBuffer("regimeniva", _i.obtenerRegimenIva(order))
+            curPedido.setValueBuffer("codagente", "NO")
+            #Gastos de envio
             if int(order["shipping_price"]) > 0:
                 curPedido.setValueBuffer("totalportes", order["shipping_price"])
                 curPedido.setValueBuffer("netoportes", order["shipping_price"]/1.21)
                 curPedido.setValueBuffer("ivaportes", 21)
                 curPedido.setValueBuffer("codimpuestoportes", 'IVA21')
                 curPedido.setValueBuffer("totalivaportes", order["shipping_price"]-(order["shipping_price"]/1.21))
-            # curPedido.setValueBuffer("gu_pedidoferia", "Web Mayorista")
-            # curPedido.setValueBuffer("gu_codferia", "Web Mayorista")
-            curPedido.setValueBuffer("mg_increment_id", str(order["increment_id"]))
-            curPedido.setValueBuffer("regimeniva", _i.obtenerRegimenIva(order))
-            curPedido.setValueBuffer("codagente", "NO")
+            #Si es una domiciliacion, pongo el numero de cuenta en las observaciones
+            if(order["bank_account"] != None && order["payment_method"] == 'direct_debit'):
+                curPedido.setValueBuffer("observaciones", order["bank_account"])
 
             if not _i.creaLineaEnvio(order, curPedido):
                 return False
