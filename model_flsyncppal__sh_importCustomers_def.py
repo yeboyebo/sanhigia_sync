@@ -28,7 +28,7 @@ class sanhigia_sync(interna):
         if qsatype.FLUtil.isInProd():
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Basic dGVzdDp0ZXN0"
+                "Authorization": "Basic c2luY3JvOklMdHYyUE9BT0NVcg=="
             }
         else:
             headers = {

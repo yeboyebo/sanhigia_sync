@@ -29,7 +29,7 @@ class sanhigia_sync(interna):
         if qsatype.FLUtil.isInProd():
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Basic dGVzdDp0ZXN0="
+                "Authorization": "Basic c2luY3JvOklMdHYyUE9BT0NVcg=="
             }
         else:
             headers = {
@@ -163,21 +163,27 @@ class sanhigia_sync(interna):
             cif = order["cif"][:20] if order["cif"] and order["cif"] != "" else ""
             if not cif or cif == "":
                 cif = "-"
-            nombrecliente = str(order["billing_address"]["firstname"]) + " " + str(order["billing_address"]["lastname"])
+            nombrecliente = str(order["shipping_address"]["firstname"]) + " " + str(order["shipping_address"]["lastname"])
 
-            street = order["billing_address"]["street"].split(" ")
+            street = order["shipping_address"]["street"].split(" ")
             dirtipovia = street[0] if len(street) >= 3 else ""
             direccion = street[1] if len(street) >= 2 else street[0]
             dirnum = street[2] if len(street) >= 3 else ""
             dirotros = street[3] if len(street) >= 4 else ""
 
-            codpostal = str(order["billing_address"]["postcode"])
-            city = order["billing_address"]["city"]
-            region = order["billing_address"]["region"]
-            codpais = _i.damePaisMg(order["billing_address"]["country_id"])
-            telefonofac = order["billing_address"]["telephone"]
+            codpostal = str(order["shipping_address"]["postcode"])
+            city = order["shipping_address"]["city"]
+            region = order["shipping_address"]["region"]
+            codpais = _i.damePaisMg(order["shipping_address"]["country_id"])
+            telefonofac = order["shipping_address"]["telephone"]
             codpago = _i.obtenerCodPago(order["payment_method"])
             email = order["email"]
+            
+            idprovincia = None
+            if order["shipping_address"]["region_id"] is not None:
+                provincias = qsatype.FLSqlQuery().execSql(u"select idprovincia from provincias where mg_idprovincia='"+str(order["shipping_address"]["region_id"])+"'")
+                if len(provincias) > 0:
+                    idprovincia = str(provincias[0][0])
 
             curPedido.setValueBuffer("codserie", "W")
             curPedido.setValueBuffer("codejercicio", _i.obtenerEjercicio(order["created_at"]))
@@ -195,6 +201,7 @@ class sanhigia_sync(interna):
             curPedido.setValueBuffer("codpostal", codpostal[:10] if codpostal else codpostal)
             curPedido.setValueBuffer("ciudad", city[:100] if city else city)
             curPedido.setValueBuffer("provincia", region[:100] if region else region)
+            curPedido.setValueBuffer("idprovincia", idprovincia)
             curPedido.setValueBuffer("telefono1", telefonofac[:30] if telefonofac else telefonofac)
             curPedido.setValueBuffer("codpais", codpais[:20] if codpais else codpais)
             curPedido.setValueBuffer("codpago", codpago[:10] if codpago else codpago)
