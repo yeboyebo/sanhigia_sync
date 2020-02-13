@@ -25,24 +25,24 @@ class sanhigia_sync(interna):
         cdSmall = 10
         cdLarge = 180
 
+        params_b2c = syncppal.iface.get_param_sincro('b2c')
+        params_orders = syncppal.iface.get_param_sincro('b2cOrdersDownload')
+        params_orders_sync = syncppal.iface.get_param_sincro('b2cOrdersDownloadSync')
+
         headers = None
         if qsatype.FLUtil.isInProd():
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Basic c2luY3JvOklMdHYyUE9BT0NVcg=="
+                "Authorization": params_b2c['auth']
             }
         else:
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Basic dGVzdDp0ZXN0"
+                "Authorization": params_b2c['test_auth']
             }
 
         try:
-            url = None
-            if qsatype.FLUtil.isInProd():
-                url = 'http://store.sanhigia.com/syncapi/index.php/orders/unsynchronized'
-            else:
-                url = 'http://local.sanhigia.com/syncapi/index.php/orders/unsynchronized'
+            url = params_orders['url'] if qsatype.FLUtil.isInProd() else params_orders['test_url']
 
             response = requests.get(url, headers=headers)
             stCode = response.status_code
@@ -75,11 +75,8 @@ class sanhigia_sync(interna):
                 syncppal.iface.log(ustr("Éxito. Los siguientes pedidos se han sincronizado correctamente: ", str(strCods)), "shsyncorders")
                 for order in aOrders.keys():
                     try:
-                        url = None
-                        if qsatype.FLUtil.isInProd():
-                            url = 'http://store.sanhigia.com/syncapi/index.php/orders/' + str(aOrders[order]) + '/synchronized'
-                        else:
-                            url = 'http://local.sanhigia.com/syncapi/index.php/orders/' + str(aOrders[order]) + '/synchronized'
+                        url = params_orders_sync['url'] if qsatype.FLUtil.isInProd() else params_orders_sync['test_url']
+                        url = url.format(aOrders[order])
 
                         print("Llamando a", url)
                         response = requests.put(url, headers=headers)
