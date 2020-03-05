@@ -50,6 +50,15 @@ class sanhigia_sync(flfactppal):
 
         return False
 
+    def sanhigia_sync_syncPvpCondCli(self, params):
+        if "passwd" in params and params['passwd'] == self.params_sincro['auth']:
+            tasks.updatePvpCondCli.delay(params['fakeRequest'])
+            return {"msg": "Tarea encolada correctamente"}
+        else:
+            print("no tengo contraseña")
+
+        return False
+
     def __init__(self, context=None):
         super().__init__(context)
 
@@ -70,4 +79,7 @@ class sanhigia_sync(flfactppal):
 
     def shsyncCust(self, params):
         return self.ctx.sanhigia_sync_shsyncCust(params)
+
+    def syncPvpCondCli(self, params):
+        return self.ctx.sanhigia_sync_syncPvpCondCli(params)
 

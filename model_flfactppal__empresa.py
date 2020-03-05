@@ -30,3 +30,7 @@ class sanhigia_sync_empresa(flfactppal_empresa, helpers.MixinConAcciones):
     def shsynccust(params):
         return form.iface.shsyncCust(params)
 
+    @helpers.decoradores.csr()
+    def syncpvpcondcli(params):
+        return form.iface.syncPvpCondCli(params)
+

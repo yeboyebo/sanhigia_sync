@@ -8,6 +8,7 @@ from models.flsyncppal import sh_importOrders_def as iGbOrders
 from models.flsyncppal import sh_updateStocks_def as iGbStocks
 from models.flsyncppal import sh_updatePrices_def as iGbPrices
 from models.flsyncppal import sh_importCustomers_def as iGbCust
+from models.flsyncppal import sh_updatePvpCondCli_def as iGbPvpCond
 
 from models.flsyncppal import sh_enviocorreosegui_def
 
@@ -147,3 +148,26 @@ def getUnsynchronizedCustomers(r):
         getUnsynchronizedCustomers.apply_async((r,), countdown=cdTime)
     else:
         syncppal.iface.log("Info. Proceso detenido", "shsynccust")
+
+
+@app.task
+def updatePvpCondCli(r):
+    DbRouter.ThreadLocalMiddleware.process_request_celery(None, r)
+
+    try:
+        cdTime = iGbPvpCond.iface.updatePvpCondCli() or cdDef
+    except Exception:
+        syncppal.iface.log("Error. Fallo en tasks", "syncpvpcondcli")
+        cdTime = cdDef
+
+    activo = False
+    try:
+        resul = qsatype.FLSqlQuery().execSql("SELECT activo FROM yb_procesos WHERE proceso = 'syncpvpcondcli'", "yeboyebo")
+        activo = resul[0][0]
+    except Exception:
+        activo = False
+
+    if activo:
+        updatePvpCondCli.apply_async((r,), countdown=cdTime)
+    else:
+        syncppal.iface.log("Info. Proceso detenido", "syncpvpcondcli")

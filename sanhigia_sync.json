@@ -55,6 +55,10 @@
             {
                 "path": "models/flsyncppal/",
                 "name": "model_flsyncppal__sh_enviocorreosegui_def.py"
+            },
+            {
+                "path": "models/flsyncppal/",
+                "name": "model_flsyncppal__sh_updatePvpCondCli_def.py"
             }
         ],
         "deleteFile": [],
