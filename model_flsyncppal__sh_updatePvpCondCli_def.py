@@ -76,7 +76,7 @@ class sanhigia_sync(interna):
             qsatype.debug(ustr("Llamando a ", url, " ", json.dumps(body)))
             response = requests.post(url, data=json.dumps(body), headers=headers)
             stCode = response.status_code
-            if response and str(stCode) == params_pvpcondcli['success_code']:
+            if response and stCode == int(params_pvpcondcli['success_code']):
                 if str(stCode) == '200' and response.text == 'ok':
                     ids_enviados = ','.join(ids_enviados)
                     emails_enviados = ','.join(emails_enviados)
