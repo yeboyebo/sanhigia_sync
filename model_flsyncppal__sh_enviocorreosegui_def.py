@@ -78,8 +78,7 @@ class sanhigia_sync(interna):
                 cuerpo += cuerpo2
                 cuerpo += '</h4></td></tr></table></td></tr></table></td></tr></table>'
                 # Comprobar la sync de envios
-                email = "{}, pozuelo@yeboyebo.es".format(email)
-                print("Los correos__: ", email)
+                email = "{}".format(email)
                 emails = email.split(",")
                 if connection is False:
                     # syncppal.iface.log("Error. Los datos de conexión han fallado", "enviocorreo")
