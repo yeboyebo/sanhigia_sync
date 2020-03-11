@@ -22,7 +22,7 @@ class interna(qsatype.objetoBase):
 # @class_declaration sanhigia_sync #
 class sanhigia_sync(interna):
 
-    @periodic_task(run_every=crontab(minute="*/02", hour="*"))
+    @periodic_task(run_every=crontab(minute="*/30", hour="*"))
     def sanhigia_sync_enviocorreo():
         q = qsatype.FLSqlQuery()
         q.setSelect("a.idalbaran,a.agenciaenvio,a.sh_numtracking,a.codigo,c.nombre,c.email")
