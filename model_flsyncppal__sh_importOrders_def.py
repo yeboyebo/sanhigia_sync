@@ -162,11 +162,11 @@ class sanhigia_sync(interna):
                 cif = "-"
             nombrecliente = str(order["shipping_address"]["firstname"]) + " " + str(order["shipping_address"]["lastname"])
 
-            street = order["shipping_address"]["street"].split(" ")
-            dirtipovia = street[0] if len(street) >= 3 else ""
-            direccion = street[1] if len(street) >= 2 else street[0]
-            dirnum = street[2] if len(street) >= 3 else ""
-            dirotros = street[3] if len(street) >= 4 else ""
+            #street = order["shipping_address"]["street"].split(" ")
+            dirtipovia = ""
+            direccion = order["shipping_address"]["street"]
+            dirnum = ""
+            dirotros = ""
 
             codpostal = str(order["shipping_address"]["postcode"])
             city = order["shipping_address"]["city"]
@@ -716,7 +716,7 @@ class sanhigia_sync(interna):
     def sanhigia_sync_obtenerCodCliente(self, cif):
         cod = None
         if str(cif) != "-":
-            cod = qsatype.FLUtil.sqlSelect("clientes", "codcliente", "cifnif = '" + str(cif) + "' order by codcliente DESC limit 1")
+            cod = qsatype.FLUtil.sqlSelect("clientes", "codcliente", "UPPER(cifnif) = '" + str(cif).upper() + "' order by codcliente DESC limit 1")
         return cod
 
     def sanhigia_sync_damePaisMg(self, codPaisISO):        
