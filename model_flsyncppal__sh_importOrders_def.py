@@ -253,11 +253,11 @@ class sanhigia_sync(interna):
         try:
 
             tracking = order["tracking_number"] if order["tracking_number"] and order["tracking_number"] != "" else ""
-            street = order["shipping_address"]["street"].split(" ")
-            dirtipoviaenv = street[0] if len(street) >= 1 else ""
-            direccionenv = str(street[1]) + " " + str(street[2]) if len(street) >= 3 else ""
-            dirnumenv = street[3] if len(street) >= 4 else ""
-            dirotrosenv = street[4] if len(street) >= 5 else ""
+            #street = order["shipping_address"]["street"].split(" ")
+            dirtipoviaenv = ""
+            direccionenv = order["shipping_address"]["street"]
+            dirnumenv = ""
+            dirotrosenv = ""
 
             numcliente = order["customer_id"]
             email = order["email"]
@@ -291,11 +291,11 @@ class sanhigia_sync(interna):
             curPedi.setValueBuffer("mg_telefonoenv", telefonoenv[:30] if telefonoenv else telefonoenv)
             curPedi.setValueBuffer("mg_gastosenv", order["shipping_price"])
             # Facturacion
-            street = order["billing_address"]["street"].split(" ")
-            dirtipoviafac = str(street[0]) if len(street) >= 1 else ""
-            direccionfac = str(street[1]) + " " + str(street[2]) if len(street) >= 3 else ""
-            dirnumfac = street[3] if len(street) >= 4 else ""
-            dirotrosfac = street[4] if len(street) >= 5 else ""
+            #street = order["billing_address"]["street"].split(" ")
+            dirtipoviafac = ""
+            direccionfac = order["billing_address"]["street"]
+            dirnumfac = ""
+            dirotrosfac = ""
             nombrefac = order["billing_address"]["firstname"]
             apellidosfac = order["billing_address"]["lastname"]
             codpostalfac = str(order["billing_address"]["postcode"])
