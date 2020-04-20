@@ -716,7 +716,7 @@ class sanhigia_sync(interna):
     def sanhigia_sync_obtenerCodCliente(self, cif):
         cod = None
         if str(cif) != "-":
-            cod = qsatype.FLUtil.sqlSelect("clientes", "codcliente", "UPPER(cifnif) = '" + str(cif).upper() + "' order by codcliente DESC limit 1")
+            cod = qsatype.FLUtil.sqlSelect("clientes", "codcliente", "UPPER(cifnif) = '" + str(cif).upper() + "' AND debaja <> True ORDER BY codcliente DESC limit 1")
         return cod
 
     def sanhigia_sync_damePaisMg(self, codPaisISO):        
