@@ -538,7 +538,8 @@ class sanhigia_sync(interna):
             curLDesc.setValueBuffer("descripcion", desc[:100] if desc else desc)
             curLDesc.setValueBuffer("codimpuesto", "IVA21")
             curLDesc.setValueBuffer("iva", 21)
-            dtoSinIva = dto / (1 + (parseFloat(21) / 100))
+            dtoSinIva = dto
+            dto = dto * (1 + (parseFloat(21) / 100))
             # curLDesc.setValueBuffer("ivaincluido", True)
             curLDesc.setValueBuffer("pvpunitarioiva", dto)
             curLDesc.setValueBuffer("pvpunitario", dtoSinIva)
