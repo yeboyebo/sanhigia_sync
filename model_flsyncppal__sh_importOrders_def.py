@@ -129,8 +129,8 @@ class sanhigia_sync(interna):
             # if not _i.creaLineaGastosComanda(curPedido, order["shipping_price"]):
             #     return False
 
-            if not _i.creaLineaDescuento(curPedido, order["discount_amount"], order["coupon"]):
-                return False
+            #if not _i.creaLineaDescuento(curPedido, order["discount_amount"], order["coupon"]):
+            #    return False
             neto = round(parseFloat(order["grand_total"] / ((100 + iva) / 100)), 2)
             iva = order["grand_total"] - neto
             if not qsatype.FLSqlQuery().execSql(u"UPDATE pedidoscli SET total = " + str(order["grand_total"]) + ", neto = " + str(neto) + ", totaliva = " + str(iva) + " WHERE idpedido = '" + str(idpedido) + "'"):
@@ -175,7 +175,7 @@ class sanhigia_sync(interna):
             telefonofac = order["shipping_address"]["telephone"]
             codpago = _i.obtenerCodPago(order["payment_method"])
             email = order["email"]
-            
+
             idprovincia = None
             if order["shipping_address"]["region_id"] is not None:
                 provincias = qsatype.FLSqlQuery().execSql(u"select idprovincia from provincias where mg_idprovincia='"+str(order["shipping_address"]["region_id"])+"'")
@@ -338,7 +338,7 @@ class sanhigia_sync(interna):
 
             # ref = _i.obtenerReferencia(linea["sku"], linea["size"])
             ref = linea["sku"]
-            
+
             desc = _i.obtenerDescripcion(ref)
             qsatype.debug("Descripcion: " + str(desc))
             codiva = _i.obtenerCodImpuesto(linea["iva"])
@@ -355,8 +355,13 @@ class sanhigia_sync(interna):
             curLinea.setValueBuffer("descripcion", desc[:100] if desc else desc)
             curLinea.setValueBuffer("referencia", ref[:18] if ref else ref)
             curLinea.setValueBuffer("numlinea", nl)
+			#Si hay dtopor aplico este como en abanq, si no hay dtopor pero hay dto_lineal reparto el descuento entre las lineas aplicandolo equitativamente al precio
+            #A petición de Jesús Senar 14-05-2020
+            if parseFloat(linea["dtopor"]) == 0 and  parseFloat(linea["descuento_lineal"]) > 0 :
+                curLinea.setValueBuffer("pvpunitario", curLinea.valueBuffer("pvpunitario") - (parseFloat(linea["descuento_lineal"])/linea["cantidad"]))
+                curLinea.setValueBuffer("pvpsindto", curLinea.valueBuffer("pvpsindto") - parseFloat(linea["descuento_lineal"]))
             curLinea.setValueBuffer("dtolineal", 0)
-            curLinea.setValueBuffer("dtopor", 0)
+            curLinea.setValueBuffer("dtopor", parseFloat(linea["dtopor"]))
             curLinea.setValueBuffer("codimpuesto", codiva[:10] if codiva else codiva)
             curLinea.setValueBuffer("canpedidorect", 0)
             curLinea.setValueBuffer("totalenalbaran", 0)
@@ -528,7 +533,7 @@ class sanhigia_sync(interna):
 
             ref = "DTOWEB"
             desc = "DESCUENTO: " + descripcion
- 
+
             curLDesc = qsatype.FLSqlCursor("lineaspedidoscli")
             curLDesc.setModeAccess(curLDesc.Insert)
             curLDesc.refreshBuffer()
@@ -720,7 +725,7 @@ class sanhigia_sync(interna):
             cod = qsatype.FLUtil.sqlSelect("clientes", "codcliente", "UPPER(cifnif) = '" + str(cif).upper() + "' AND debaja <> True ORDER BY codcliente DESC limit 1")
         return cod
 
-    def sanhigia_sync_damePaisMg(self, codPaisISO):        
+    def sanhigia_sync_damePaisMg(self, codPaisISO):
         return qsatype.FLUtil.sqlSelect("paises", "codpais", "codiso = '" + str(codPaisISO) + "'")
 
     def __init__(self, context=None):
