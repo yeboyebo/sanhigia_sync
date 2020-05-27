@@ -8,7 +8,7 @@ class sanhigia_sync(flfactppal):
         oDM = _i.datosConfigMail()
         print("sanhigia_sync_enviocorreo")
         try:
-            nombreCorreo = ["nikolay@yeboyebo.es","pozuelo@yeboyebo.es","juanma@yeboyebo.es"]
+            nombreCorreo = ["nikolay@yeboyebo.es","pozuelo@yeboyebo.es"]
             asunto = "Asunto prueba envio seguimiento"
             cuerpo = "Cuerpo prueba envio seguimiento"
             connection = notifications.get_connection(oDM.hostcorreosaliente, oDM.usuariosmtp, oDM.passwordsmtp, oDM.puertosmtp, oDM.tipocxsmtp)
