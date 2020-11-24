@@ -326,6 +326,7 @@ class sanhigia_sync(interna):
         _i = self.iface
 
         try:
+            qsatype.debug("\n\n----------sanhigia_sync_creaLineaPedido")
             curLinea = qsatype.FLSqlCursor("lineaspedidoscli")
             curLinea.setModeAccess(curLinea.Insert)
             curLinea.refreshBuffer()
@@ -338,7 +339,7 @@ class sanhigia_sync(interna):
 
             # ref = _i.obtenerReferencia(linea["sku"], linea["size"])
             ref = linea["sku"]
-
+            qsatype.debug("\n\n----------sanhigia_sync_creaLineaPedido ref: " + ref)
             desc = _i.obtenerDescripcion(ref)
             qsatype.debug("Descripcion: " + str(desc))
             codiva = _i.obtenerCodImpuesto(linea["iva"])
@@ -367,12 +368,14 @@ class sanhigia_sync(interna):
             curLinea.setValueBuffer("totalenalbaran", 0)
 
             if not curLinea.commitBuffer():
+                qsatype.debug("Error guardando la linea al hacer el commit. Referencia")
                 syncppal.iface.log(ustr("Error. No se pudo guardar la línea ", str(nl), " de la venta ", str(idpedido)), "shsyncorders")
                 return False
 
             return True
 
         except Exception as e:
+            qsatype.debug("\n\n----------sanhigia_sync_creaLineaPedido e: ")
             qsatype.debug(e)
             return False
 

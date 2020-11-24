@@ -6,6 +6,20 @@
             "value": {
                 "mg_customers": null
             }
+        },
+        {
+            "type": "insertAfterNode",
+            "path": "/models/flfactalma/mg_customers",
+            "value": {
+                "movistock": null
+            }
+        },
+        {
+            "type": "insertAfterNode",
+            "path": "/models/flfactalma/movistock",
+            "value": {
+                "articuloscomp": null
+            }
         }
     ]
 }

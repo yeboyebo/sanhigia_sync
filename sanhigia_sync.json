@@ -59,6 +59,22 @@
             {
                 "path": "models/flsyncppal/",
                 "name": "model_flsyncppal__sh_updatePvpCondCli_def.py"
+            },
+            {
+                "name": "model_flfactalma__movistock.py",
+                "path": "models/flfactalma/"
+            },
+            {
+                "name": "model_flfactalma__movistock_def.py",
+                "path": "models/flfactalma/"
+            },
+            {
+                "name": "model_flfactalma__articuloscomp.py",
+                "path": "models/flfactalma/"
+            },
+            {
+                "name": "model_flfactalma__articuloscomp_def.py",
+                "path": "models/flfactalma/"
             }
         ],
         "deleteFile": [],
