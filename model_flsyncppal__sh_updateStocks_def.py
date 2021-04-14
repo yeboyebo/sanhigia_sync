@@ -87,7 +87,7 @@ class sanhigia_sync(interna):
             if not len(body):
                 nuevaultsincro = str(currD) + "T" + str(currT)
                 qsatype.FLUtil.writeDBSettingEntry("SincroStock", nuevaultsincro)
-                syncppal.iface.log("Éxito. No hay stocks que sincronizar.", "shsyncstock")
+                syncppal.iface.log("Exito. No hay stocks que sincronizar.", "shsyncstock")
                 return cdLarge
 
             url = params_stock['url'] if qsatype.FLUtil.isInProd() else params_stock['test_url']
@@ -102,7 +102,7 @@ class sanhigia_sync(interna):
                 if jsonres and "request_id" in jsonres:
                     nuevaultsincro = str(currD) + "T" + str(currT)
                     qsatype.FLUtil.writeDBSettingEntry("SincroStock", nuevaultsincro)
-                    syncppal.iface.log("Éxito. Stock sincronizado correctamente (id: " + str(jsonres["request_id"]) + ")", "shsyncstock")
+                    syncppal.iface.log("Exito. Stock sincronizado correctamente (id: " + str(jsonres["request_id"]) + ")", "shsyncstock")
                     return cdSmall
                 else:
                     syncppal.iface.log("Error. No se pudo actualizar el stock.", "shsyncstock")

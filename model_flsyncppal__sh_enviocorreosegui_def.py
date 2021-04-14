@@ -34,7 +34,7 @@ class sanhigia_sync(interna):
         q.setWhere(where)
         q.exec_()
         if not q.size():
-             # syncppal.iface.log("Éxito", "No hay datos para enviar")
+             # syncppal.iface.log("Exito", "No hay datos para enviar")
             return True
         oDM = qsatype.Object()
         qDM = qsatype.FLSqlQuery()
@@ -88,7 +88,7 @@ class sanhigia_sync(interna):
                     # syncppal.iface.log("Error. Ocurrió un error durante el proceso de enviar correos de segumiento de envio", "enviocorreo")
                     estado = "Error"
                 else:
-                    # syncppal.iface.log("Éxito. Se ha enviado email con número el seguimiento al cliente {}".format(item["nombre"]), "enviocorreo")
+                    # syncppal.iface.log("Exito. Se ha enviado email con número el seguimiento al cliente {}".format(item["nombre"]), "enviocorreo")
                     estado = "Enviado"
             qsatype.FLSqlQuery().execSql("UPDATE albaranescli SET sh_estadosegui = '{}' WHERE idalbaran = '{}'".format(estado, idalbaran))
         return True

@@ -84,7 +84,7 @@ class sanhigia_sync(interna):
                 body.append({"sku": sku, "price": price, "sincroPrecios": True, "auto": True, "store_id": store_id, "website": website})
 
             if not len(body):
-                syncppal.iface.log("Éxito. No hay precios que sincronizar.", "shsyncprices")
+                syncppal.iface.log("Exito. No hay precios que sincronizar.", "shsyncprices")
                 return cdLarge
 
             url = params_prices['url'] if qsatype.FLUtil.isInProd() else params_prices['test_url']
@@ -101,7 +101,7 @@ class sanhigia_sync(interna):
                     nuevaultsincro = str(currD) + "T" + str(currT)
                     qsatype.FLUtil.writeDBSettingEntry("SincroPrices", nuevaultsincro)
 
-                    syncppal.iface.log("Éxito. Precios sincronizados correctamente (id: " + str(jsonres["request_id"]) + ")", "shsyncprices")
+                    syncppal.iface.log("Exito. Precios sincronizados correctamente (id: " + str(jsonres["request_id"]) + ")", "shsyncprices")
                     return cdSmall
                 else:
                     syncppal.iface.log("Error. No se pudo actualizar los precios.", "shsyncprices")

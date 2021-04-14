@@ -108,6 +108,62 @@
             {
                 "name": "model_flfactppal__clientes.py",
                 "path": "models/flfactppal/"
+            },
+            {
+                "name": "ctrl_base_magento2_orders__orders_download.py",
+                "path": "controllers/base/magento2/orders/controllers/"
+            },
+            {
+                "name": "ctrl_base_magento2_customers__customer_upload.py",
+                "path": "controllers/base/magento2/customers/controllers/"
+            },
+            {
+                "name": "ctrl_base_magento2_price__price_upload.py",
+                "path": "controllers/base/magento2/price/controllers/"
+            },
+            {
+                "name": "ctrl_base_magento2_tierprice__tierprice_upload.py",
+                "path": "controllers/base/magento2/tierprice/controllers/"
+            },
+            {
+                "name": "ctrl_base_magento2_inventory__inventory_upload.py",
+                "path": "controllers/base/magento2/inventory/controllers/"
+            },
+            {
+                "name": "ctrl_base_magento2_products__products_upload.py",
+                "path": "controllers/base/magento2/products/controllers/"
+            },
+            {
+                "name": "ctrl_base_mirakl_orders__orders_download.py",
+                "path": "controllers/base/mirakl/orders/controllers/"
+            },
+            {
+                "name": "ctrl_base_mirakl_returnsvaldemoro__returnsvaldemoro_download.py",
+                "path": "controllers/base/mirakl/returnsvaldemoro/controllers/"
+            },
+            {
+                "name": "ctrl_base_mirakl_returns__returns_download.py",
+                "path": "controllers/base/mirakl/returns/controllers/"
+            },
+            {
+                "name": "ctrl_base_mirakl_offersdate__offersdate_upload.py",
+                "path": "controllers/base/mirakl/offersdate/controllers/"
+            },
+            {
+                "name": "ctrl_base_mirakl_offers__offers_upload.py",
+                "path": "controllers/base/mirakl/offers/controllers/"
+            },
+            {
+                "name": "ctrl_base_default_controllers__download_sync.py",
+                "path": "controllers/base/default/controllers/"
+            },
+            {
+                "name": "ctrl_base_default_controllers__upload_sync.py",
+                "path": "controllers/base/default/controllers/"
+            },
+            {
+                "name": "ctrl_base_default_controllers__connect_sync.py",
+                "path": "controllers/base/default/controllers/"
             }
         ]
     }

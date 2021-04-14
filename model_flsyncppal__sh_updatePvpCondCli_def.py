@@ -68,7 +68,7 @@ class sanhigia_sync(interna):
                 body.append(datossincro)
 
             if not len(body):
-                syncppal.iface.log("Éxito. No hay precios artículo cliente que sincronizar.", "syncpvpcondcli")
+                syncppal.iface.log("Exito. No hay precios artículo cliente que sincronizar.", "syncpvpcondcli")
                 return cdLarge
 
             url = params_pvpcondcli['url'] if qsatype.FLUtil.isInProd() else params_pvpcondcli['test_url']
@@ -81,7 +81,7 @@ class sanhigia_sync(interna):
                     ids_enviados = ','.join(ids_enviados)
                     emails_enviados = ','.join(emails_enviados)
                     qsatype.FLSqlQuery().execSql("UPDATE mg_colasincroweb SET sincronizado = true WHERE idssw in (" + ids_enviados + ")")
-                    syncppal.iface.log("Éxito. Los precios del los clientes ({}) sincronizados correctamente".format(emails_enviados), "syncpvpcondcli")
+                    syncppal.iface.log("Exito. Los precios del los clientes ({}) sincronizados correctamente".format(emails_enviados), "syncpvpcondcli")
                     return cdSmall
                 else:
                     syncppal.iface.log("Error. No se pudo actualizar los precios del los clientes ({}).".format(emails_enviados), "syncpvpcondcli")

@@ -72,7 +72,7 @@ class sanhigia_sync(interna):
                 strCods = ""
                 for k in aOrders.keys():
                     strCods += k if strCods == "" else ", " + k
-                syncppal.iface.log(ustr("Éxito. Los siguientes pedidos se han sincronizado correctamente: ", str(strCods)), "shsyncorders")
+                syncppal.iface.log(ustr("Exito. Los siguientes pedidos se han sincronizado correctamente: ", str(strCods)), "shsyncorders")
                 for order in aOrders.keys():
                     try:
                         url = params_orders_sync['url'] if qsatype.FLUtil.isInProd() else params_orders_sync['test_url']
@@ -84,10 +84,10 @@ class sanhigia_sync(interna):
                     except Exception:
                         syncppal.iface.log(ustr("Error. El pedido ", str(order), " no ha podido marcarse como sincronizado."), "shsyncorders")
             elif aOrders == {}:
-                syncppal.iface.log("Éxito. No hay pedidos que sincronizar.", "shsyncorders")
+                syncppal.iface.log("Exito. No hay pedidos que sincronizar.", "shsyncorders")
                 return cdLarge
         else:
-            syncppal.iface.log("Éxito. No hay pedidos que sincronizar.", "shsyncorders")
+            syncppal.iface.log("Exito. No hay pedidos que sincronizar.", "shsyncorders")
             return cdLarge
 
         return cdSmall

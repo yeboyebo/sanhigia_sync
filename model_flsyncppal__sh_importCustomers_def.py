@@ -69,7 +69,7 @@ class sanhigia_sync(interna):
                 return cdSmall
 
             if aCustomers and len(aCustomers):
-                syncppal.iface.log(ustr("Éxito. Los siguientes clientes se han sincronizado correctamente: ", ustr(aCustomers)), 'shsynccust')
+                syncppal.iface.log(ustr("Exito. Los siguientes clientes se han sincronizado correctamente: ", ustr(aCustomers)), 'shsynccust')
                 for customer in aCustomers:
                     try:
                         url = params_customers_sync['url'] if qsatype.FLUtil.isInProd() else params_customers_sync['test_url']
@@ -81,10 +81,10 @@ class sanhigia_sync(interna):
                     except Exception:
                         syncppal.iface.log(ustr("Error. El cliente ", customer, " no ha podido marcarse como sincronizado."), 'shsynccust')
             elif aCustomers == []:
-                syncppal.iface.log("Éxito. No hay clientes que sincronizar.", 'shsynccust')
+                syncppal.iface.log("Exito. No hay clientes que sincronizar.", 'shsynccust')
                 return cdLarge
         else:
-            syncppal.iface.log("Éxito. No hay clientes que sincronizar.", 'shsynccust')
+            syncppal.iface.log("Exito. No hay clientes que sincronizar.", 'shsynccust')
             return cdLarge
 
         return cdSmall
